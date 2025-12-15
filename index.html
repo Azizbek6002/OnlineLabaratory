@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Kimyo Laboratoriyasi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="atom-loader">
+                <div class="nucleus"></div>
+                <div class="orbit orbit1"></div>
+                <div class="orbit orbit2"></div>
+                <div class="orbit orbit3"></div>
+                <div class="electron"></div>
+            </div>
+            <h2>Kimyoviy Laboratoriya Yuklanmoqda...</h2>
+            <p>Interaktiv tizim ishga tushirilmoqda</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-atom"></i>
+                <span>Virtual Kimyo Lab</span>
+            </div>
+
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">
+                    <i class="fas fa-home"></i> Bosh Sahifa
+                </a>
+                <a href="#elements" class="nav-link">
+                    <i class="fas fa-table"></i> Elementlar Jadvali
+                </a>
+                <a href="#experiments" class="nav-link">
+                    <i class="fas fa-flask"></i> Eksperimentlar
+                </a>
+                <a href="#technology" class="nav-link">
+                    <i class="fas fa-microscope"></i> Texnologiyalar
+                </a>
+                <a href="#resources" class="nav-link">
+                    <i class="fas fa-book"></i> Resurslar
+                </a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-primary" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Kirish
+                </button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Virtual Kimyoviy Laboratoriya
+                    </h1>
+                    <p class="hero-subtitle">
+                        Mendeleyev jadvalini o'rganing, xavfsiz eksperimentlar bajaring va zamonaviy texnologiyalar bilan tanishing. Barchasi bir platformada!
+                    </p>
+
+                    <div class="hero-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-atom"></i>
+                            <div>
+                                <h3>118</h3>
+                                <p>Kimyoviy Element</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-vial"></i>
+                            <div>
+                                <h3>50+</h3>
+                                <p>Virtual Eksperiment</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-user-graduate"></i>
+                            <div>
+                                <h3>100%</h3>
+                                <p>Xavfsizlik</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="scrollToSection('elements')">
+                            <i class="fas fa-play"></i> Boshlash
+                        </button>
+                        <button class="btn btn-outline btn-lg" id="demo-btn">
+                            <i class="fas fa-video"></i> Demo Ko'rish
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Periodic Table Section -->
+        <section id="elements" class="section periodic-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-table"></i> Mendeleyev Jadvali</h2>
+                    <p>118 ta kimyoviy elementning to'liq ma'lumotlari va xususiyatlari</p>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="elementSearch" placeholder="Element nomi yoki raqami bo'yicha qidirish...">
+                    </div>
+
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">Barchasi</button>
+                        <button class="filter-btn" data-filter="metal">Metallar</button>
+                        <button class="filter-btn" data-filter="nonmetal">Metallmaslar</button>
+                        <button class="filter-btn" data-filter="noble">Nobial gazlar</button>
+                        <button class="filter-btn" data-filter="alkali">Ishqoriy metallar</button>
+                        <button class="filter-btn" data-filter="alkaline-earth">Ishqoriy-yer metallari</button>
+                        <button class="filter-btn" data-filter="transition">O'tish metallari</button>
+                    </div>
+                </div>
+
+                <div class="periodic-table-container">
+                    <div class="legend">
+                        <div class="legend-item">
+                            <span class="legend-color metal"></span>
+                            <span>Metallar</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color nonmetal"></span>
+                            <span>Metallmaslar</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color alkali"></span>
+                            <span>Ishqoriy</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color noble"></span>
+                            <span>Nobial gaz</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color halogen"></span>
+                            <span>Galogenlar</span>
+                        </div>
+                    </div>
+
+                    <div id="periodicTable" class="periodic-table">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Element Details Modal -->
+            <div id="elementModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="elementName"></h3>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="element-details">
+                            <div class="element-symbol-large" id="elementSymbolLarge"></div>
+                            <div class="element-info">
+                                <div class="info-row">
+                                    <span>Atom raqami:</span>
+                                    <strong id="atomicNumber"></strong>
+                                </div>
+                                <div class="info-row">
+                                    <span>Atom massasi:</span>
+                                    <strong id="atomicMass"></strong>
+                                </div>
+                                <div class="info-row">
+                                    <span>Guruh:</span>
+                                    <strong id="group"></strong>
+                                </div>
+                                <div class="info-row">
+                                    <span>Davr:</span>
+                                    <strong id="period"></strong>
+                                </div>
+                                <div class="info-row">
+                                    <span>Xona:</span>
+                                    <strong id="block"></strong>
+                                </div>
+                                <div class="info-row">
+                                    <span>Holati:</span>
+                                    <strong id="state"></strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="element-description" id="elementDescription">
+                            <!-- Description will be loaded here -->
+                        </div>
+
+                        <div class="element-actions">
+                            <button class="btn btn-outline" id="experimentWithElement">
+                                <i class="fas fa-flask"></i> Eksperiment Qilish
+                            </button>
+                            <button class="btn btn-primary" id="saveElement">
+                                <i class="fas fa-bookmark"></i> Saqlash
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experiments Section -->
+        <section id="experiments" class="section experiments-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-flask"></i> Virtual Eksperimentlar</h2>
+                    <p>Xavfsiz va interaktiv kimyo eksperimentlarini bajarish</p>
+                </div>
+
+                <div class="experiments-grid">
+                    <!-- Experiment cards will be generated dynamically -->
+                </div>
+            </div>
+
+            <!-- Experiment Lab Modal -->
+            <div id="experimentLab" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="experimentTitle"></h3>
+                        <div class="experiment-controls">
+                            <button class="btn btn-outline" id="resetExperiment">
+                                <i class="fas fa-redo"></i> Qayta boshlash
+                            </button>
+                            <button class="btn btn-primary" id="runExperiment">
+                                <i class="fas fa-play"></i> Ishga tushirish
+                            </button>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="lab-container">
+                            <div class="lab-controls">
+                                <h4><i class="fas fa-sliders-h"></i> Parametrlar</h4>
+                                <div class="control-group">
+                                    <label for="temperature">Harorat (°C)</label>
+                                    <input type="range" id="temperature" min="0" max="500" value="25">
+                                    <span id="tempValue">25°C</span>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="concentration">Konsentratsiya (M)</label>
+                                    <input type="range" id="concentration" min="0" max="10" step="0.1" value="1">
+                                    <span id="concValue">1M</span>
+                                </div>
+
+                                <div class="chemical-selector">
+                                    <h4><i class="fas fa-vial"></i> Reaktivlar</h4>
+                                    <div class="chemical-list" id="chemicalList">
+                                        <!-- Chemicals will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="lab-results">
+                                <h4><i class="fas fa-chart-line"></i> Natijalar</h4>
+                                <div class="results-container">
+                                    <div class="reaction-info" id="reactionInfo">
+                                        <!-- Reaction information will be shown here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="technology" class="section technology-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-microscope"></i> Texnologiyalar Bilan Ishlash</h2>
+                    <p>Zamonaviy laboratoriya uskunalarini virtual o'rganish</p>
+                </div>
+
+                <div class="tech-tabs">
+                    <button class="tech-tab active" data-tab="spectroscopy">
+                        <i class="fas fa-wave-square"></i> Spektroskopiya
+                    </button>
+                    <button class="tech-tab" data-tab="chromatography">
+                        <i class="fas fa-tint"></i> Xromatografiya
+                    </button>
+                    <button class="tech-tab" data-tab="microscopy">
+                        <i class="fas fa-microscope"></i> Mikroskopiya
+                    </button>
+                    <button class="tech-tab" data-tab="titration">
+                        <i class="fas fa-vial"></i> Titratsiya
+                    </button>
+                </div>
+
+                <div class="tech-content">
+                    <div class="tech-panel active" id="spectroscopy">
+                        <div class="tech-visual">
+                            <div class="spectrometer">
+                                <div class="light-source"></div>
+                                <div class="prism"></div>
+                                <div class="detector"></div>
+                                <div class="spectrum" id="spectrumDisplay"></div>
+                            </div>
+                        </div>
+                        <div class="tech-info">
+                            <h3>Spektroskopiya</h3>
+                            <p>Moddalarning yorug'likni yutish yoki chiqarish spektrlarini o'rganish usuli. Bu usul yordamida moddalarning tarkibi va tuzilishini aniqlash mumkin.</p>
+                            <div class="tech-controls">
+                                <select id="sampleSelect">
+                                    <option value="na">Natrium (Na)</option>
+                                    <option value="k">Kaliy (K)</option>
+                                    <option value="cu">Mis (Cu)</option>
+                                    <option value="h2o">Suv (H₂O)</option>
+                                </select>
+                                <button class="btn btn-primary" id="analyzeSample">
+                                    <i class="fas fa-search"></i> Tahliil Qilish
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-panel" id="chromatography">
+                        <div class="tech-visual">
+                            <!-- Chromatography visualization -->
+                        </div>
+                        <div class="tech-info">
+                            <h3>Xromatografiya</h3>
+                            <p>Aralashmalarni tarkibiy qismlariga ajratish usuli.</p>
+                        </div>
+                    </div>
+
+                    <div class="tech-panel" id="microscopy">
+                        <div class="tech-visual">
+                            <!-- Microscopy visualization -->
+                        </div>
+                        <div class="tech-info">
+                            <h3>Mikroskopiya</h3>
+                            <p>Kichik obyektlarni kattalashtirib ko'rish usuli.</p>
+                        </div>
+                    </div>
+
+                    <div class="tech-panel" id="titration">
+                        <div class="tech-visual">
+                            <!-- Titration visualization -->
+                        </div>
+                        <div class="tech-info">
+                            <h3>Titratsiya</h3>
+                            <p>Erigan modda miqdorini aniqlash usuli.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="section resources-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-book"></i> Qo'shimcha Resurslar</h2>
+                    <p>Kimyo o'rganish uchun foydali materiallar</p>
+                </div>
+
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3>PDF Darsliklar</h3>
+                        <p>Kimyo fanidan bepul darsliklar va qo'llanmalar</p>
+                        <button class="btn btn-outline">Yuklab olish</button>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3>Video Darslar</h3>
+                        <p>Eksperimentlarni video ko'rish va tushunish</p>
+                        <button class="btn btn-outline">Ko'rish</button>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Kimyo O'yinlari</h3>
+                        <p>O'ynab o'rganish - qiziqarli interaktiv o'yinlar</p>
+                        <button class="btn btn-outline">O'ynash</button>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3>Testlar va Mashqlar</h3>
+                        <p>Bilimingizni sinab ko'ring va mashq qiling</p>
+                        <button class="btn btn-outline">Boshlash</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-atom"></i> Virtual Kimyo Lab</h3>
+                    <p>Kimyo fanini xavfsiz, qiziqarli va samarali o'rganish platformasi. Barcha talabalar va o'qituvchilar uchun.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Bo'limlar</h3>
+                    <ul>
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Bosh Sahifa</a></li>
+                        <li><a href="#elements"><i class="fas fa-chevron-right"></i> Elementlar Jadvali</a></li>
+                        <li><a href="#experiments"><i class="fas fa-chevron-right"></i> Eksperimentlar</a></li>
+                        <li><a href="#technology"><i class="fas fa-chevron-right"></i> Texnologiyalar</a></li>
+                        <li><a href="#resources"><i class="fas fa-chevron-right"></i> Resurslar</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Aloqa</h3>
+                    <p><i class="fas fa-envelope"></i> info@kimyolab.uz</p>
+                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Toshkent sh., O'zbekiston</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2024</span> Virtual Kimyo Laboratoriyasi. Barcha huquqlar himoyalangan.</p>
+                <p>Ishlab chiqaruvchi: Kimyo o'qituvchilari jamoasi</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
