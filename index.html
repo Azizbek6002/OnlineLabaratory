@@ -3,467 +3,1024 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual Kimyo Laboratoriyasi</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Virtual Kimyo Laboratoriyasi — Interaktiv ta'lim platformasi</title>
+    <meta name="description" content="118 elementli interaktiv davriy jadval, virtual kimyo eksperimentlari, spektroskopiya, xromatografiya, mikroskopiya, titratsiya, bilim testlari va kalkulyatorlar — barchasi o'zbek tilida.">
+    <meta name="theme-color" content="#f8fafc">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Virtual Kimyo Laboratoriyasi">
+    <meta property="og:description" content="Interaktiv davriy jadval, virtual laboratoriya va zamonaviy kimyo texnologiyalari.">
+    <meta property="og:locale" content="uz_UZ">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
+    <!-- Fon rasmi va uning oldidagi shisha qatlam -->
+    <div class="page-backdrop" aria-hidden="true">
+        <div class="page-backdrop-image"></div>
+        <div class="page-backdrop-glass"></div>
+    </div>
+
+    <!-- ================= LOADING ================= -->
+    <div class="loading-screen" id="loadingScreen" role="status" aria-live="polite">
         <div class="loading-content">
-            <div class="atom-loader">
-                <div class="nucleus"></div>
-                <div class="orbit orbit1"></div>
-                <div class="orbit orbit2"></div>
-                <div class="orbit orbit3"></div>
-                <div class="electron"></div>
+            <div class="atom-loader" aria-hidden="true">
+                <div class="atom-nucleus"></div>
+                <div class="atom-orbit atom-orbit-1"><span class="atom-electron"></span></div>
+                <div class="atom-orbit atom-orbit-2"><span class="atom-electron"></span></div>
+                <div class="atom-orbit atom-orbit-3"><span class="atom-electron"></span></div>
             </div>
-            <h2>Kimyoviy Laboratoriya Yuklanmoqda...</h2>
-            <p>Interaktiv tizim ishga tushirilmoqda</p>
+            <h2>Virtual laboratoriya yuklanmoqda</h2>
+            <p>Interaktiv tizim ishga tushirilmoqda…</p>
+            <div class="loading-bar"><span></span></div>
         </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="container">
-            <div class="nav-brand">
-                <i class="fas fa-atom"></i>
-                <span>Virtual Kimyo Lab</span>
-            </div>
+    <!-- ================= HEADER ================= -->
+    <header class="site-header" id="siteHeader">
+        <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+        <div class="container header-inner">
+            <a class="brand" href="#home" aria-label="Virtual Kimyo Laboratoriyasi bosh sahifa">
+                <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-atom"></i></span>
+                <span class="brand-text">
+                    <strong>Virtual Kimyo</strong>
+                    <small>Laboratoriyasi</small>
+                </span>
+            </a>
 
-            <div class="nav-menu">
-                <a href="#home" class="nav-link active">
-                    <i class="fas fa-home"></i> Bosh Sahifa
-                </a>
-                <a href="#elements" class="nav-link">
-                    <i class="fas fa-table"></i> Elementlar Jadvali
-                </a>
-                <a href="#experiments" class="nav-link">
-                    <i class="fas fa-flask"></i> Eksperimentlar
-                </a>
-                <a href="#technology" class="nav-link">
-                    <i class="fas fa-microscope"></i> Texnologiyalar
-                </a>
-                <a href="#resources" class="nav-link">
-                    <i class="fas fa-book"></i> Resurslar
-                </a>
-            </div>
+            <nav class="nav" aria-label="Asosiy navigatsiya">
+                <ul class="nav-menu" id="navMenu">
+                    <li><a class="nav-link is-active" href="#home"><i class="fa-solid fa-house" aria-hidden="true"></i> Bosh sahifa</a></li>
+                    <li><a class="nav-link" href="#elements"><i class="fa-solid fa-table-cells" aria-hidden="true"></i> Elementlar</a></li>
+                    <li><a class="nav-link" href="#experiments"><i class="fa-solid fa-flask-vial" aria-hidden="true"></i> Eksperimentlar</a></li>
+                    <li><a class="nav-link" href="#technology"><i class="fa-solid fa-microscope" aria-hidden="true"></i> Texnologiyalar</a></li>
+                    <li><a class="nav-link" href="#quiz"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Test</a></li>
+                    <li><a class="nav-link" href="#resources"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Resurslar</a></li>
+                </ul>
+            </nav>
 
-            <div class="nav-actions">
-                <button class="btn btn-outline" id="theme-toggle">
-                    <i class="fas fa-moon"></i>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle" type="button" aria-label="Qorong'u rejimga o'tish" aria-pressed="false" title="Qorong'u rejim">
+                    <i class="fa-solid fa-moon" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-primary" id="login-btn">
-                    <i class="fas fa-sign-in-alt"></i> Kirish
+                <button class="btn btn-ghost auth-button" id="authButton" type="button" aria-label="Tizimga kirish">
+                    <span class="auth-avatar" id="authAvatar" hidden aria-hidden="true"></span>
+                    <i class="fa-regular fa-user auth-icon" aria-hidden="true"></i>
+                    <span id="authButtonLabel">Kirish</span>
+                </button>
+                <button class="nav-toggle" id="navToggle" type="button" aria-label="Menyuni ochish" aria-expanded="false" aria-controls="navMenu">
+                    <span></span><span></span><span></span>
                 </button>
             </div>
-
-            <button class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </button>
         </div>
-    </nav>
+    </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero-section">
-            <div class="container">
-                <div class="hero-content">
-                    <h1 class="hero-title">
-                        Virtual Kimyoviy Laboratoriya
-                    </h1>
-                    <p class="hero-subtitle">
-                        Mendeleyev jadvalini o'rganing, xavfsiz eksperimentlar bajaring va zamonaviy texnologiyalar bilan tanishing. Barchasi bir platformada!
+        <!-- ================= HERO ================= -->
+        <section id="home" class="hero">
+            <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+            <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+            <div class="container hero-inner">
+                <div class="hero-copy">
+                    <span class="eyebrow reveal"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> Interaktiv kimyo ta'lim platformasi</span>
+                    <h1 class="hero-title reveal">Kimyoni <span class="gradient-text">xavfsiz</span> va qiziqarli o'rganing</h1>
+                    <p class="hero-lede reveal">
+                        118 elementli to'liq davriy jadval, real hisob-kitoblarga asoslangan virtual eksperimentlar,
+                        zamonaviy laboratoriya texnologiyalari va bilim testlari — barchasi bitta platformada.
                     </p>
-
-                    <div class="hero-stats">
-                        <div class="stat-card">
-                            <i class="fas fa-atom"></i>
-                            <div>
-                                <h3>118</h3>
-                                <p>Kimyoviy Element</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-vial"></i>
-                            <div>
-                                <h3>50+</h3>
-                                <p>Virtual Eksperiment</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-user-graduate"></i>
-                            <div>
-                                <h3>100%</h3>
-                                <p>Xavfsizlik</p>
-                            </div>
-                        </div>
+                    <div class="hero-actions reveal">
+                        <a class="btn btn-primary btn-lg" href="#elements">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i> Boshlash
+                        </a>
+                        <button class="btn btn-outline btn-lg" id="demoBtn" type="button">
+                            <i class="fa-solid fa-route" aria-hidden="true"></i> Demo tur
+                        </button>
                     </div>
+                    <dl class="hero-stats reveal">
+                        <div class="stat">
+                            <dt><span data-count="118">0</span></dt>
+                            <dd>Kimyoviy element</dd>
+                        </div>
+                        <div class="stat">
+                            <dt><span data-count="6">0</span></dt>
+                            <dd>Virtual eksperiment</dd>
+                        </div>
+                        <div class="stat">
+                            <dt><span data-count="4">0</span></dt>
+                            <dd>Laboratoriya texnologiyasi</dd>
+                        </div>
+                        <div class="stat">
+                            <dt><span data-count="12">0</span></dt>
+                            <dd>Test savoli</dd>
+                        </div>
+                    </dl>
+                </div>
 
-                    <div class="hero-actions">
-                        <button class="btn btn-primary btn-lg" onclick="scrollToSection('elements')">
-                            <i class="fas fa-play"></i> Boshlash
-                        </button>
-                        <button class="btn btn-outline btn-lg" id="demo-btn">
-                            <i class="fas fa-video"></i> Demo Ko'rish
-                        </button>
+                <div class="hero-visual reveal" aria-hidden="true">
+                    <div class="hero-orbit-scene">
+                        <div class="hero-atom">
+                            <span class="hero-nucleus"></span>
+                            <span class="hero-ring hero-ring-1"></span>
+                            <span class="hero-ring hero-ring-2"></span>
+                            <span class="hero-ring hero-ring-3"></span>
+                        </div>
+                        <div class="floating-card floating-card-1">
+                            <span class="fc-symbol">H</span>
+                            <span class="fc-meta"><strong>Vodorod</strong><small>1.008 a.m.b.</small></span>
+                        </div>
+                        <div class="floating-card floating-card-2">
+                            <span class="fc-symbol">O</span>
+                            <span class="fc-meta"><strong>Kislorod</strong><small>15.999 a.m.b.</small></span>
+                        </div>
+                        <div class="floating-card floating-card-3">
+                            <i class="fa-solid fa-flask-vial"></i>
+                            <span class="fc-meta"><strong>pH = 7</strong><small>Neytral muhit</small></span>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="container feature-strip reveal">
+                <article class="feature-pill">
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                    <div><strong>100% xavfsiz</strong><span>Virtual muhitda tajriba</span></div>
+                </article>
+                <article class="feature-pill">
+                    <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+                    <div><strong>Real hisob-kitob</strong><span>Stoxiometriya va pH</span></div>
+                </article>
+                <article class="feature-pill">
+                    <i class="fa-solid fa-mobile-screen" aria-hidden="true"></i>
+                    <div><strong>Barcha qurilmalar</strong><span>Telefon, planshet, kompyuter</span></div>
+                </article>
+                <article class="feature-pill">
+                    <i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i>
+                    <div><strong>Oflayn saqlash</strong><span>Progress brauzerda</span></div>
+                </article>
+            </div>
         </section>
 
-        <!-- Periodic Table Section -->
-        <section id="elements" class="section periodic-section">
+        <!-- ================= ELEMENTS ================= -->
+        <section id="elements" class="section">
             <div class="container">
-                <div class="section-header">
-                    <h2><i class="fas fa-table"></i> Mendeleyev Jadvali</h2>
-                    <p>118 ta kimyoviy elementning to'liq ma'lumotlari va xususiyatlari</p>
-                </div>
+                <header class="section-header reveal">
+                    <span class="eyebrow"><i class="fa-solid fa-table-cells" aria-hidden="true"></i> Davriy qonun</span>
+                    <h2>Mendeleyev davriy jadvali</h2>
+                    <p>Barcha 118 element: nomi, belgisi, atom massasi, guruhi, davri va asosiy xossalari. Qidiring, filtrlang va sevimlilarga saqlang.</p>
+                </header>
 
-                <div class="controls-panel">
+                <div class="table-toolbar reveal">
                     <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="elementSearch" placeholder="Element nomi yoki raqami bo'yicha qidirish...">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <input type="search" id="elementSearch" placeholder="Nomi, belgisi, raqami yoki massasi…" autocomplete="off" aria-label="Element qidirish">
+                        <kbd class="search-kbd" title="Ctrl + K">Ctrl K</kbd>
                     </div>
-
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" data-filter="all">Barchasi</button>
-                        <button class="filter-btn" data-filter="metal">Metallar</button>
-                        <button class="filter-btn" data-filter="nonmetal">Metallmaslar</button>
-                        <button class="filter-btn" data-filter="noble">Nobial gazlar</button>
-                        <button class="filter-btn" data-filter="alkali">Ishqoriy metallar</button>
-                        <button class="filter-btn" data-filter="alkaline-earth">Ishqoriy-yer metallari</button>
-                        <button class="filter-btn" data-filter="transition">O'tish metallari</button>
+                    <div class="toolbar-meta">
+                        <span class="result-count" id="tableResultCount">118 ta element</span>
+                        <button class="btn btn-ghost btn-sm" id="tableReset" type="button">
+                            <i class="fa-solid fa-arrow-rotate-left" aria-hidden="true"></i> Tozalash
+                        </button>
                     </div>
                 </div>
 
-                <div class="periodic-table-container">
-                    <div class="legend">
-                        <div class="legend-item">
-                            <span class="legend-color metal"></span>
-                            <span>Metallar</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color nonmetal"></span>
-                            <span>Metallmaslar</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color alkali"></span>
-                            <span>Ishqoriy</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color noble"></span>
-                            <span>Nobial gaz</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color halogen"></span>
-                            <span>Galogenlar</span>
-                        </div>
-                    </div>
+                <div class="filter-row reveal" role="group" aria-label="Element kategoriyalari">
+                    <button class="filter-chip is-active" type="button" data-filter="all" aria-pressed="true">Barchasi</button>
+                    <button class="filter-chip" type="button" data-filter="favorites" aria-pressed="false">
+                        <i class="fa-solid fa-bookmark" aria-hidden="true"></i> Sevimlilar
+                        <span class="chip-badge" id="favoriteCount" hidden>0</span>
+                    </button>
+                    <button class="filter-chip" type="button" data-filter="alkali" aria-pressed="false"><span class="dot" style="--dot:#f59e0b"></span>Ishqoriy</button>
+                    <button class="filter-chip" type="button" data-filter="alkaline-earth" aria-pressed="false"><span class="dot" style="--dot:#fb923c"></span>Ishqoriy-yer</button>
+                    <button class="filter-chip" type="button" data-filter="transition" aria-pressed="false"><span class="dot" style="--dot:#22c55e"></span>O'tish</button>
+                    <button class="filter-chip" type="button" data-filter="post-transition" aria-pressed="false"><span class="dot" style="--dot:#14b8a6"></span>Post-o'tish</button>
+                    <button class="filter-chip" type="button" data-filter="metalloid" aria-pressed="false"><span class="dot" style="--dot:#a855f7"></span>Metalloid</button>
+                    <button class="filter-chip" type="button" data-filter="nonmetal" aria-pressed="false"><span class="dot" style="--dot:#ef4444"></span>Metallmas</button>
+                    <button class="filter-chip" type="button" data-filter="halogen" aria-pressed="false"><span class="dot" style="--dot:#f97316"></span>Galogen</button>
+                    <button class="filter-chip" type="button" data-filter="noble" aria-pressed="false"><span class="dot" style="--dot:#0ea5e9"></span>Nobial</button>
+                    <button class="filter-chip" type="button" data-filter="lanthanide" aria-pressed="false"><span class="dot" style="--dot:#8b5cf6"></span>Lantanid</button>
+                    <button class="filter-chip" type="button" data-filter="actinide" aria-pressed="false"><span class="dot" style="--dot:#ec4899"></span>Aktinid</button>
+                </div>
 
-                    <div id="periodicTable" class="periodic-table">
-                        <!-- Dynamic content -->
+                <div class="table-shell reveal">
+                    <div class="table-scroll">
+                        <div class="periodic-table" id="periodicTable" role="group" aria-label="Mendeleyev davriy jadvali"></div>
+                    </div>
+                    <p class="table-empty" id="tableEmpty" hidden>
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        Hech narsa topilmadi. Filtrni o'zgartiring yoki boshqa nom bilan qidiring.
+                    </p>
+                    <div class="table-legend">
+                        <span><i class="dot" style="--dot:#f59e0b"></i>Ishqoriy metallar</span>
+                        <span><i class="dot" style="--dot:#fb923c"></i>Ishqoriy-yer</span>
+                        <span><i class="dot" style="--dot:#22c55e"></i>O'tish metallari</span>
+                        <span><i class="dot" style="--dot:#14b8a6"></i>Post-o'tish</span>
+                        <span><i class="dot" style="--dot:#a855f7"></i>Metalloidlar</span>
+                        <span><i class="dot" style="--dot:#ef4444"></i>Metallmaslar</span>
+                        <span><i class="dot" style="--dot:#f97316"></i>Galogenlar</span>
+                        <span><i class="dot" style="--dot:#0ea5e9"></i>Nobial gazlar</span>
+                        <span><i class="dot" style="--dot:#8b5cf6"></i>Lantanidlar</span>
+                        <span><i class="dot" style="--dot:#ec4899"></i>Aktinidlar</span>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Element Details Modal -->
-            <div id="elementModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 id="elementName"></h3>
-                        <button class="close-modal">&times;</button>
+        <!-- ================= EXPERIMENTS ================= -->
+        <section id="experiments" class="section section-alt">
+            <div class="container">
+                <header class="section-header reveal">
+                    <span class="eyebrow"><i class="fa-solid fa-flask-vial" aria-hidden="true"></i> Virtual laboratoriya</span>
+                    <h2>Interaktiv eksperimentlar</h2>
+                    <p>Parametrlarni o'zgartiring, jarayonni kuzating va real kimyoviy hisob-kitob natijalarini oling. Barcha tajribalar xavfsiz virtual muhitda.</p>
+                </header>
+
+                <div class="filter-row filter-row-center reveal" role="group" aria-label="Eksperiment qiyinlik darajasi">
+                    <button class="experiment-filter is-active" type="button" data-difficulty="all" aria-pressed="true">Barchasi</button>
+                    <button class="experiment-filter" type="button" data-difficulty="beginner" aria-pressed="false">Boshlang'ich</button>
+                    <button class="experiment-filter" type="button" data-difficulty="intermediate" aria-pressed="false">O'rta</button>
+                    <button class="experiment-filter" type="button" data-difficulty="advanced" aria-pressed="false">Murakkab</button>
+                </div>
+
+                <div class="experiments-grid" id="experimentsGrid"></div>
+            </div>
+        </section>
+
+        <!-- ================= TECHNOLOGY ================= -->
+        <section id="technology" class="section">
+            <div class="container">
+                <header class="section-header reveal">
+                    <span class="eyebrow"><i class="fa-solid fa-microscope" aria-hidden="true"></i> Zamonaviy uskunalar</span>
+                    <h2>Laboratoriya texnologiyalari</h2>
+                    <p>Spektroskopiya, xromatografiya, mikroskopiya va titratsiya — real laboratoriya uskunalarining virtual simulyatsiyalari.</p>
+                </header>
+
+                <div class="tech-tabs reveal" role="tablist" aria-label="Laboratoriya texnologiyalari">
+                    <button class="tech-tab is-active" type="button" role="tab" data-tech-tab="spectroscopy" aria-selected="true" aria-controls="techSpectroscopy">
+                        <i class="fa-solid fa-rainbow" aria-hidden="true"></i> Spektroskopiya
+                    </button>
+                    <button class="tech-tab" type="button" role="tab" data-tech-tab="chromatography" aria-selected="false" aria-controls="techChromatography">
+                        <i class="fa-solid fa-layer-group" aria-hidden="true"></i> Xromatografiya
+                    </button>
+                    <button class="tech-tab" type="button" role="tab" data-tech-tab="microscopy" aria-selected="false" aria-controls="techMicroscopy">
+                        <i class="fa-solid fa-microscope" aria-hidden="true"></i> Mikroskopiya
+                    </button>
+                    <button class="tech-tab" type="button" role="tab" data-tech-tab="titration" aria-selected="false" aria-controls="techTitration">
+                        <i class="fa-solid fa-eye-dropper" aria-hidden="true"></i> Titratsiya
+                    </button>
+                </div>
+
+                <div class="tech-panels">
+                    <!-- Spektroskopiya -->
+                    <div class="tech-panel is-active" id="techSpectroscopy" role="tabpanel" data-tech-panel="spectroscopy">
+                        <div class="tech-grid">
+                            <div class="tech-controls card">
+                                <h3><i class="fa-solid fa-rainbow" aria-hidden="true"></i> Spektroskopiya</h3>
+                                <p class="muted">Namuna tarkibidagi elementni emissiya spektri orqali aniqlang.</p>
+                                <label class="field">
+                                    <span>Namuna</span>
+                                    <select id="spectroscopySample">
+                                        <option value="na">Natrium (Na)</option>
+                                        <option value="k">Kaliy (K)</option>
+                                        <option value="cu">Mis (Cu)</option>
+                                        <option value="ca">Kaltsiy (Ca)</option>
+                                        <option value="h">Vodorod (H)</option>
+                                        <option value="hg">Simob (Hg)</option>
+                                    </select>
+                                </label>
+                                <button class="btn btn-primary btn-block" id="spectroscopyAnalyze" type="button">
+                                    <i class="fa-solid fa-wave-square" aria-hidden="true"></i> Tahlil qilish
+                                </button>
+                                <div class="tech-result" id="spectroscopyResult"></div>
+                            </div>
+                            <div class="tech-stage card">
+                                <div class="spectrum-display" id="spectrumDisplay">
+                                    <div class="spectrum-axis" id="spectrumAxis"></div>
+                                </div>
+                                <div class="spectrum-lines" id="spectrumLines"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="element-details">
-                            <div class="element-symbol-large" id="elementSymbolLarge"></div>
-                            <div class="element-info">
-                                <div class="info-row">
-                                    <span>Atom raqami:</span>
-                                    <strong id="atomicNumber"></strong>
+
+                    <!-- Xromatografiya -->
+                    <div class="tech-panel" id="techChromatography" role="tabpanel" data-tech-panel="chromatography" hidden>
+                        <div class="tech-grid">
+                            <div class="tech-controls card">
+                                <h3><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Xromatografiya</h3>
+                                <p class="muted">Qog'oz xromatografiyasi yordamida aralashma komponentlarini ajrating.</p>
+                                <label class="field">
+                                    <span>Namuna</span>
+                                    <select id="chromaSample">
+                                        <option value="ink">Qora siyoh</option>
+                                        <option value="plant">O'simlik pigmentlari</option>
+                                        <option value="marker">Rangli marker</option>
+                                    </select>
+                                </label>
+                                <label class="field">
+                                    <span>Erituvchi</span>
+                                    <select id="chromaSolvent">
+                                        <option value="water">Suv</option>
+                                        <option value="ethanol">Etanol</option>
+                                        <option value="hexane">Geksan</option>
+                                    </select>
+                                </label>
+                                <div class="btn-row">
+                                    <button class="btn btn-primary" id="chromaStart" type="button">
+                                        <i class="fa-solid fa-play" aria-hidden="true"></i> Boshlash
+                                    </button>
+                                    <button class="btn btn-ghost" id="chromaReset" type="button">
+                                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Tiklash
+                                    </button>
                                 </div>
-                                <div class="info-row">
-                                    <span>Atom massasi:</span>
-                                    <strong id="atomicMass"></strong>
+                                <div class="readout" id="chromaReadout">Tayyor</div>
+                            </div>
+                            <div class="tech-stage card">
+                                <div class="chroma-paper" id="chromaPaper">
+                                    <div class="chroma-front" id="chromaFront"></div>
+                                    <div class="chroma-spots" id="chromaSpots"></div>
                                 </div>
-                                <div class="info-row">
-                                    <span>Guruh:</span>
-                                    <strong id="group"></strong>
-                                </div>
-                                <div class="info-row">
-                                    <span>Davr:</span>
-                                    <strong id="period"></strong>
-                                </div>
-                                <div class="info-row">
-                                    <span>Xona:</span>
-                                    <strong id="block"></strong>
-                                </div>
-                                <div class="info-row">
-                                    <span>Holati:</span>
-                                    <strong id="state"></strong>
+                                <div class="chroma-table-wrap" id="chromaTable">
+                                    <p class="muted">Tajribani boshlang — komponentlar Rf qiymatlari bo'yicha ajraladi.</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="element-description" id="elementDescription">
-                            <!-- Description will be loaded here -->
+                    <!-- Mikroskopiya -->
+                    <div class="tech-panel" id="techMicroscopy" role="tabpanel" data-tech-panel="microscopy" hidden>
+                        <div class="tech-grid">
+                            <div class="tech-controls card">
+                                <h3><i class="fa-solid fa-microscope" aria-hidden="true"></i> Mikroskopiya</h3>
+                                <p class="muted">Preparatni tanlang, kattalashtirish, fokus va yorug'likni sozlang.</p>
+                                <label class="field">
+                                    <span>Preparat</span>
+                                    <select id="microscopeSlide">
+                                        <option value="onion">Piyoz hujayrasi</option>
+                                        <option value="leaf">Barg hujayrasi</option>
+                                        <option value="blood">Qon surtmasi</option>
+                                        <option value="salt">Tuz kristali</option>
+                                    </select>
+                                </label>
+                                <label class="field">
+                                    <span>Kattalashtirish <output id="microscopeZoomValue">200×</output></span>
+                                    <input type="range" id="microscopeZoom" min="100" max="400" step="20" value="200">
+                                </label>
+                                <label class="field">
+                                    <span>Fokus <output id="microscopeFocusValue">55%</output></span>
+                                    <input type="range" id="microscopeFocus" min="0" max="100" step="1" value="55">
+                                </label>
+                                <label class="field">
+                                    <span>Yorug'lik <output id="microscopeLightValue">70%</output></span>
+                                    <input type="range" id="microscopeLight" min="0" max="100" step="1" value="70">
+                                </label>
+                                <button class="btn btn-ghost btn-block" id="microscopeReset" type="button">
+                                    <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Sozlamalarni tiklash
+                                </button>
+                            </div>
+                            <div class="tech-stage card">
+                                <div class="microscope-frame">
+                                    <canvas id="microscopeCanvas" aria-label="Mikroskop ko'rinishi"></canvas>
+                                </div>
+                                <div class="readout" id="microscopeReadout"></div>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="element-actions">
-                            <button class="btn btn-outline" id="experimentWithElement">
-                                <i class="fas fa-flask"></i> Eksperiment Qilish
-                            </button>
-                            <button class="btn btn-primary" id="saveElement">
-                                <i class="fas fa-bookmark"></i> Saqlash
-                            </button>
+                    <!-- Titratsiya -->
+                    <div class="tech-panel" id="techTitration" role="tabpanel" data-tech-panel="titration" hidden>
+                        <div class="tech-grid tech-grid-wide">
+                            <div class="tech-controls card">
+                                <h3><i class="fa-solid fa-eye-dropper" aria-hidden="true"></i> Titrlash</h3>
+                                <p class="muted">Byuretkadan NaOH qo'shib, ekvivalent nuqtani toping.</p>
+                                <div class="field-grid">
+                                    <label class="field">
+                                        <span>HCl konsentratsiyasi (M)</span>
+                                        <input type="number" id="titrationAcidConc" min="0.01" max="2" step="0.01" value="0.1">
+                                    </label>
+                                    <label class="field">
+                                        <span>NaOH konsentratsiyasi (M)</span>
+                                        <input type="number" id="titrationBaseConc" min="0.01" max="2" step="0.01" value="0.1">
+                                    </label>
+                                </div>
+                                <label class="field">
+                                    <span>HCl hajmi (mL)</span>
+                                    <input type="number" id="titrationAcidVolume" min="5" max="100" step="1" value="25">
+                                </label>
+                                <div class="btn-grid">
+                                    <button class="btn btn-outline btn-sm" id="titrationDrop" type="button">+0.05 mL</button>
+                                    <button class="btn btn-outline btn-sm" id="titrationHalf" type="button">+0.5 mL</button>
+                                    <button class="btn btn-outline btn-sm" id="titrationOne" type="button">+1 mL</button>
+                                    <button class="btn btn-primary btn-sm" id="titrationAuto" type="button">
+                                        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Avtomatik titrlash
+                                    </button>
+                                    <button class="btn btn-ghost btn-sm" id="titrationReset" type="button">
+                                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Tiklash
+                                    </button>
+                                </div>
+                                <dl class="metric-list">
+                                    <div><dt>Qo'shilgan hajm</dt><dd id="titrationVolume">0.00 mL</dd></div>
+                                    <div><dt>pH</dt><dd id="titrationPH">1.00</dd></div>
+                                    <div><dt>Ekvivalent hajm</dt><dd id="titrationEquivalence">25.00 mL</dd></div>
+                                </dl>
+                                <div class="titration-status is-acidic" id="titrationStatus">Kislotali muhit</div>
+                                <p class="readout" id="titrationReadout"></p>
+                            </div>
+                            <div class="tech-stage card titration-stage">
+                                <div class="titration-apparatus" aria-hidden="true">
+                                    <div class="burette">
+                                        <div class="burette-liquid" id="buretteFill"></div>
+                                        <div class="burette-drop" id="titrationDropVisual"></div>
+                                    </div>
+                                    <div class="flask">
+                                        <div class="flask-liquid" id="titrationFlaskLiquid"></div>
+                                    </div>
+                                </div>
+                                <canvas id="titrationChart" aria-label="Titrlash egri chizig'i"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Experiments Section -->
-        <section id="experiments" class="section experiments-section">
+        <!-- ================= QUIZ ================= -->
+        <section id="quiz" class="section section-alt">
             <div class="container">
-                <div class="section-header">
-                    <h2><i class="fas fa-flask"></i> Virtual Eksperimentlar</h2>
-                    <p>Xavfsiz va interaktiv kimyo eksperimentlarini bajarish</p>
-                </div>
+                <header class="section-header reveal">
+                    <span class="eyebrow"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Bilimni sinang</span>
+                    <h2>Kimyo bo'yicha test</h2>
+                    <p>18 savoldan tasodifiy tanlangan 12 tasi. Har bir javob izoh bilan mustahkamlanadi.</p>
+                </header>
 
-                <div class="experiments-grid">
-                    <!-- Experiment cards will be generated dynamically -->
-                </div>
-            </div>
-
-            <!-- Experiment Lab Modal -->
-            <div id="experimentLab" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 id="experimentTitle"></h3>
-                        <div class="experiment-controls">
-                            <button class="btn btn-outline" id="resetExperiment">
-                                <i class="fas fa-redo"></i> Qayta boshlash
-                            </button>
-                            <button class="btn btn-primary" id="runExperiment">
-                                <i class="fas fa-play"></i> Ishga tushirish
-                            </button>
-                            <button class="close-modal">&times;</button>
+                <div class="quiz-shell reveal">
+                    <!-- Start -->
+                    <div class="quiz-screen quiz-start" id="quizStart">
+                        <div class="quiz-start-visual" aria-hidden="true">
+                            <i class="fa-solid fa-flask-vial"></i>
+                            <span class="quiz-bubble quiz-bubble-1"></span>
+                            <span class="quiz-bubble quiz-bubble-2"></span>
+                            <span class="quiz-bubble quiz-bubble-3"></span>
                         </div>
+                        <h3>Bilimingizni sinab ko'ring</h3>
+                        <p>Davriy jadval, mol, pH, reaksiyalar, elektroliz va laboratoriya xavfsizligi bo'yicha savollar.</p>
+                        <div class="quiz-start-meta">
+                            <span><i class="fa-solid fa-list-ol" aria-hidden="true"></i> 12 savol</span>
+                            <span><i class="fa-solid fa-clock" aria-hidden="true"></i> ~6 daqiqa</span>
+                            <span><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Eng yaxshi: <strong id="quizBest">—</strong></span>
+                        </div>
+                        <p class="muted" id="quizStartBest">Hali topshirilmagan</p>
+                        <button class="btn btn-primary btn-lg" id="quizStartBtn" type="button">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i> Testni boshlash
+                        </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="lab-container">
-                            <div class="lab-controls">
-                                <h4><i class="fas fa-sliders-h"></i> Parametrlar</h4>
-                                <div class="control-group">
-                                    <label for="temperature">Harorat (°C)</label>
-                                    <input type="range" id="temperature" min="0" max="500" value="25">
-                                    <span id="tempValue">25°C</span>
-                                </div>
 
-                                <div class="control-group">
-                                    <label for="concentration">Konsentratsiya (M)</label>
-                                    <input type="range" id="concentration" min="0" max="10" step="0.1" value="1">
-                                    <span id="concValue">1M</span>
-                                </div>
-
-                                <div class="chemical-selector">
-                                    <h4><i class="fas fa-vial"></i> Reaktivlar</h4>
-                                    <div class="chemical-list" id="chemicalList">
-                                        <!-- Chemicals will be loaded here -->
-                                    </div>
-                                </div>
+                    <!-- Game -->
+                    <div class="quiz-screen quiz-game" id="quizGame" hidden>
+                        <div class="quiz-topbar">
+                            <div class="quiz-progress">
+                                <div class="quiz-progress-track"><span id="quizProgressBar"></span></div>
+                                <span id="quizProgressText">1 / 12</span>
                             </div>
-
-                            <div class="lab-results">
-                                <h4><i class="fas fa-chart-line"></i> Natijalar</h4>
-                                <div class="results-container">
-                                    <div class="reaction-info" id="reactionInfo">
-                                        <!-- Reaction information will be shown here -->
-                                    </div>
-                                </div>
+                            <div class="quiz-meta">
+                                <span class="quiz-score"><i class="fa-solid fa-star" aria-hidden="true"></i> <strong id="quizScore">0</strong></span>
+                                <span class="quiz-timer"><i class="fa-solid fa-clock" aria-hidden="true"></i> <strong id="quizTime">0:00</strong></span>
                             </div>
                         </div>
+                        <span class="quiz-topic" id="quizTopic">Mavzu</span>
+                        <h3 class="quiz-question" id="quizQuestion">Savol</h3>
+                        <div class="quiz-options" id="quizOptions"></div>
+                        <div class="quiz-feedback" id="quizFeedback" hidden></div>
+                        <button class="btn btn-primary quiz-next" id="quizNext" type="button" hidden>Keyingi savol</button>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Technology Section -->
-        <section id="technology" class="section technology-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2><i class="fas fa-microscope"></i> Texnologiyalar Bilan Ishlash</h2>
-                    <p>Zamonaviy laboratoriya uskunalarini virtual o'rganish</p>
-                </div>
-
-                <div class="tech-tabs">
-                    <button class="tech-tab active" data-tab="spectroscopy">
-                        <i class="fas fa-wave-square"></i> Spektroskopiya
-                    </button>
-                    <button class="tech-tab" data-tab="chromatography">
-                        <i class="fas fa-tint"></i> Xromatografiya
-                    </button>
-                    <button class="tech-tab" data-tab="microscopy">
-                        <i class="fas fa-microscope"></i> Mikroskopiya
-                    </button>
-                    <button class="tech-tab" data-tab="titration">
-                        <i class="fas fa-vial"></i> Titratsiya
-                    </button>
-                </div>
-
-                <div class="tech-content">
-                    <div class="tech-panel active" id="spectroscopy">
-                        <div class="tech-visual">
-                            <div class="spectrometer">
-                                <div class="light-source"></div>
-                                <div class="prism"></div>
-                                <div class="detector"></div>
-                                <div class="spectrum" id="spectrumDisplay"></div>
+                    <!-- Result -->
+                    <div class="quiz-screen quiz-result" id="quizResult" hidden>
+                        <div class="quiz-result-head">
+                            <div class="quiz-ring" id="quizResultRing">
+                                <div class="quiz-ring-inner">
+                                    <strong id="quizResultPercent">0%</strong>
+                                    <span>Natija</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="tech-info">
-                            <h3>Spektroskopiya</h3>
-                            <p>Moddalarning yorug'likni yutish yoki chiqarish spektrlarini o'rganish usuli. Bu usul yordamida moddalarning tarkibi va tuzilishini aniqlash mumkin.</p>
-                            <div class="tech-controls">
-                                <select id="sampleSelect">
-                                    <option value="na">Natrium (Na)</option>
-                                    <option value="k">Kaliy (K)</option>
-                                    <option value="cu">Mis (Cu)</option>
-                                    <option value="h2o">Suv (H₂O)</option>
-                                </select>
-                                <button class="btn btn-primary" id="analyzeSample">
-                                    <i class="fas fa-search"></i> Tahliil Qilish
+                            <div class="quiz-result-copy">
+                                <h3 id="quizResultTitle">Natija</h3>
+                                <p id="quizResultMessage"></p>
+                                <div class="quiz-result-meta">
+                                    <span>Ball: <strong id="quizResultScore">0 / 12</strong></span>
+                                    <span>Vaqt: <strong id="quizResultTime">0:00</strong></span>
+                                </div>
+                                <button class="btn btn-primary" id="quizRestart" type="button">
+                                    <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Qayta topshirish
                                 </button>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="tech-panel" id="chromatography">
-                        <div class="tech-visual">
-                            <!-- Chromatography visualization -->
-                        </div>
-                        <div class="tech-info">
-                            <h3>Xromatografiya</h3>
-                            <p>Aralashmalarni tarkibiy qismlariga ajratish usuli.</p>
-                        </div>
-                    </div>
-
-                    <div class="tech-panel" id="microscopy">
-                        <div class="tech-visual">
-                            <!-- Microscopy visualization -->
-                        </div>
-                        <div class="tech-info">
-                            <h3>Mikroskopiya</h3>
-                            <p>Kichik obyektlarni kattalashtirib ko'rish usuli.</p>
-                        </div>
-                    </div>
-
-                    <div class="tech-panel" id="titration">
-                        <div class="tech-visual">
-                            <!-- Titration visualization -->
-                        </div>
-                        <div class="tech-info">
-                            <h3>Titratsiya</h3>
-                            <p>Erigan modda miqdorini aniqlash usuli.</p>
-                        </div>
+                        <div class="quiz-review" id="quizReview"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Resources Section -->
-        <section id="resources" class="section resources-section">
+        <!-- ================= TOOLS ================= -->
+        <section id="tools" class="section">
             <div class="container">
-                <div class="section-header">
-                    <h2><i class="fas fa-book"></i> Qo'shimcha Resurslar</h2>
-                    <p>Kimyo o'rganish uchun foydali materiallar</p>
+                <header class="section-header reveal">
+                    <span class="eyebrow"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Yordamchi vositalar</span>
+                    <h2>O'quv asboblari</h2>
+                    <p>Molyar massa va suyultirish kalkulyatori, element o'yini hamda chop etiladigan formulalar varaqasi.</p>
+                </header>
+
+                <div class="tools-grid">
+                    <article class="tool-card reveal">
+                        <span class="tool-icon" style="--tool:#2563eb"><i class="fa-solid fa-calculator" aria-hidden="true"></i></span>
+                        <h3>Molyar massa kalkulyatori</h3>
+                        <p>Murakkab formulalarni qavslar bilan hisoblang: Ca(OH)₂, Al₂(SO₄)₃, CuSO₄·5H₂O.</p>
+                        <button class="btn btn-outline btn-block" type="button" data-modal-open="calculatorModal">
+                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Kalkulyatorni ochish
+                        </button>
+                    </article>
+                    <article class="tool-card reveal">
+                        <span class="tool-icon" style="--tool:#8b5cf6"><i class="fa-solid fa-gamepad" aria-hidden="true"></i></span>
+                        <h3>Element o'yini</h3>
+                        <p>10 raundda element belgisi va nomini tez toping. Eng yaxshi natijangiz saqlanadi.</p>
+                        <button class="btn btn-outline btn-block" type="button" data-modal-open="gameModal">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i> O'yinni boshlash
+                        </button>
+                    </article>
+                    <article class="tool-card reveal">
+                        <span class="tool-icon" style="--tool:#10b981"><i class="fa-solid fa-file-lines" aria-hidden="true"></i></span>
+                        <h3>Formulalar varaqasi</h3>
+                        <p>Asosiy kimyoviy formulalar, qonunlar va hisob-kitob jadvallari — chop etish uchun tayyor.</p>
+                        <button class="btn btn-outline btn-block" type="button" data-modal-open="formulaModal">
+                            <i class="fa-solid fa-eye" aria-hidden="true"></i> Varaqni ko'rish
+                        </button>
+                    </article>
                 </div>
+            </div>
+        </section>
+
+        <!-- ================= RESOURCES ================= -->
+        <section id="resources" class="section section-alt">
+            <div class="container">
+                <header class="section-header reveal">
+                    <span class="eyebrow"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Resurslar</span>
+                    <h2>Bilim va xavfsizlik</h2>
+                    <p>Laboratoriya xavfsizligi qoidalari, foydali hujjatlar va platformadan foydalanish bo'yicha qo'llanma.</p>
+                </header>
 
                 <div class="resources-grid">
-                    <div class="resource-card">
-                        <div class="resource-icon">
-                            <i class="fas fa-file-pdf"></i>
-                        </div>
-                        <h3>PDF Darsliklar</h3>
-                        <p>Kimyo fanidan bepul darsliklar va qo'llanmalar</p>
-                        <button class="btn btn-outline">Yuklab olish</button>
-                    </div>
-
-                    <div class="resource-card">
-                        <div class="resource-icon">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <h3>Video Darslar</h3>
-                        <p>Eksperimentlarni video ko'rish va tushunish</p>
-                        <button class="btn btn-outline">Ko'rish</button>
-                    </div>
-
-                    <div class="resource-card">
-                        <div class="resource-icon">
-                            <i class="fas fa-gamepad"></i>
-                        </div>
-                        <h3>Kimyo O'yinlari</h3>
-                        <p>O'ynab o'rganish - qiziqarli interaktiv o'yinlar</p>
-                        <button class="btn btn-outline">O'ynash</button>
-                    </div>
-
-                    <div class="resource-card">
-                        <div class="resource-icon">
-                            <i class="fas fa-question-circle"></i>
-                        </div>
-                        <h3>Testlar va Mashqlar</h3>
-                        <p>Bilimingizni sinab ko'ring va mashq qiling</p>
-                        <button class="btn btn-outline">Boshlash</button>
-                    </div>
+                    <article class="resource-card reveal">
+                        <span class="resource-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
+                        <h3>Xavfsizlik qoidalari</h3>
+                        <ul class="check-list">
+                            <li>Har doim himoya ko'zoyagi va xalat kiying.</li>
+                            <li>Kislotani suvga asta-sekin quying — aksincha emas.</li>
+                            <li>Reagentlarni hidlab ko'rmang, qo'l bilan tegizmang.</li>
+                            <li>Ochiq olov yonida yonuvchi moddalar saqlamang.</li>
+                            <li>Tajribadan keyin qo'llarni va ish joyini tozalang.</li>
+                        </ul>
+                    </article>
+                    <article class="resource-card reveal">
+                        <span class="resource-icon"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i></span>
+                        <h3>Formulalar varaqasi</h3>
+                        <p>Molyar massa, konsentratsiya, gaz qonunlari, elektroliz va pH hisob-kitoblari bir varaqda.</p>
+                        <button class="btn btn-primary btn-sm" type="button" data-modal-open="formulaModal">
+                            <i class="fa-solid fa-download" aria-hidden="true"></i> Yuklab olish
+                        </button>
+                    </article>
+                    <article class="resource-card reveal">
+                        <span class="resource-icon"><i class="fa-solid fa-keyboard" aria-hidden="true"></i></span>
+                        <h3>Klaviatura yorliqlari</h3>
+                        <p><kbd>Ctrl</kbd> + <kbd>K</kbd> — element qidiruviga o'tish, <kbd>Esc</kbd> — oynani yopish, strelkalar — jadval bo'ylab harakat.</p>
+                        <button class="btn btn-ghost btn-sm" id="shortcutsBtn" type="button">
+                            <i class="fa-solid fa-circle-info" aria-hidden="true"></i> Batafsil
+                        </button>
+                    </article>
+                    <article class="resource-card reveal">
+                        <span class="resource-icon"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></span>
+                        <h3>Ma'lumotlar maxfiyligi</h3>
+                        <p>Profil, sevimlilar va progress faqat sizning brauzeringizda (<code>localStorage</code>) saqlanadi. Serverga hech narsa yuborilmaydi.</p>
+                        <button class="btn btn-ghost btn-sm" id="openProfileBtn" type="button">
+                            <i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Progressni ko'rish
+                        </button>
+                    </article>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3><i class="fas fa-atom"></i> Virtual Kimyo Lab</h3>
-                    <p>Kimyo fanini xavfsiz, qiziqarli va samarali o'rganish platformasi. Barcha talabalar va o'qituvchilar uchun.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Bo'limlar</h3>
-                    <ul>
-                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Bosh Sahifa</a></li>
-                        <li><a href="#elements"><i class="fas fa-chevron-right"></i> Elementlar Jadvali</a></li>
-                        <li><a href="#experiments"><i class="fas fa-chevron-right"></i> Eksperimentlar</a></li>
-                        <li><a href="#technology"><i class="fas fa-chevron-right"></i> Texnologiyalar</a></li>
-                        <li><a href="#resources"><i class="fas fa-chevron-right"></i> Resurslar</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Aloqa</h3>
-                    <p><i class="fas fa-envelope"></i> info@kimyolab.uz</p>
-                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Toshkent sh., O'zbekiston</p>
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-atom"></i></span>
+                <div>
+                    <strong>Virtual Kimyo Laboratoriyasi</strong>
+                    <p>Xavfsiz, interaktiv va o'zbek tilidagi kimyo ta'lim platformasi.</p>
                 </div>
             </div>
-
-            <div class="footer-bottom">
-                <p>&copy; <span id="currentYear">2024</span> Virtual Kimyo Laboratoriyasi. Barcha huquqlar himoyalangan.</p>
-                <p>Ishlab chiqaruvchi: Kimyo o'qituvchilari jamoasi</p>
-            </div>
+            <nav class="footer-links" aria-label="Footer navigatsiyasi">
+                <a href="#elements">Elementlar</a>
+                <a href="#experiments">Eksperimentlar</a>
+                <a href="#technology">Texnologiyalar</a>
+                <a href="#quiz">Test</a>
+                <a href="#tools">Vositalar</a>
+            </nav>
+            <p class="footer-note">
+                &copy; <span id="currentYear">2026</span> Virtual Kimyo Laboratoriyasi.
+                Ta'lim maqsadida yaratilgan. Real laboratoriya ishlari faqat mutaxassis nazoratida bajariladi.
+            </p>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="app.js"></script>
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Yuqoriga qaytish">
+        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+    <!-- ================= ELEMENT MODAL ================= -->
+    <div class="modal" id="elementModal" role="dialog" aria-modal="true" aria-labelledby="elementModalName" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-lg" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <div class="element-modal-head">
+                <div class="element-modal-symbol" id="elementModalSymbol">H</div>
+                <div>
+                    <span class="element-modal-number" id="elementModalNumber">1-element</span>
+                    <h3 id="elementModalName">Vodorod</h3>
+                    <span class="element-modal-category" id="elementModalCategory">Metallmaslar</span>
+                </div>
+            </div>
+            <div class="element-modal-body">
+                <div class="property-grid" id="elementProperties"></div>
+                <p class="synthetic-note" id="elementSyntheticNote" hidden></p>
+                <div class="element-section">
+                    <h4><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Tavsif</h4>
+                    <p id="elementDescription"></p>
+                </div>
+                <div class="element-section">
+                    <h4><i class="fa-solid fa-industry" aria-hidden="true"></i> Qo'llanilishi</h4>
+                    <p id="elementUses"></p>
+                </div>
+                <div class="element-modal-actions">
+                    <button class="btn btn-outline" id="favoriteElementBtn" type="button" aria-pressed="false">
+                        <i class="fa-regular fa-bookmark" aria-hidden="true"></i><span>Sevimlilarga qo'shish</span>
+                    </button>
+                    <button class="btn btn-primary" id="elementExperimentBtn" type="button">
+                        <i class="fa-solid fa-flask" aria-hidden="true"></i><span>Eksperimentlar</span>
+                    </button>
+                </div>
+                <div class="element-nav">
+                    <button class="btn btn-ghost btn-sm" id="elementPrev" type="button">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Oldingi
+                    </button>
+                    <button class="btn btn-ghost btn-sm" id="elementNext" type="button">
+                        Keyingi <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= EXPERIMENT LAB ================= -->
+    <div class="modal" id="experimentLab" role="dialog" aria-modal="true" aria-labelledby="experimentTitle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-xl" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <header class="lab-modal-head">
+                <span class="lab-type" id="experimentType">Reaksiya turi</span>
+                <h3 id="experimentTitle">Eksperiment</h3>
+                <p id="experimentSubtitle">Formula</p>
+                <div class="lab-equation" id="experimentEquation">—</div>
+            </header>
+
+            <div class="lab-layout">
+                <div class="lab-visual-column">
+                    <div class="lab-stage" id="labStage">
+                        <div class="lab-beaker">
+                            <div class="lab-glass"></div>
+                            <div class="lab-liquid" id="labLiquid"></div>
+                            <div class="lab-bubbles" id="labBubbles"></div>
+                            <div class="lab-precipitate" id="labPrecipitate"></div>
+                            <div class="lab-flame" aria-hidden="true"></div>
+                            <div class="electrode left"><span class="electrode-bubbles left"></span></div>
+                            <div class="electrode right"><span class="electrode-bubbles right"></span></div>
+                        </div>
+                        <div class="lab-readout" id="labReadout">Tayyor</div>
+                    </div>
+                    <div class="lab-progress"><span id="experimentProgressBar"></span></div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary" id="runExperiment" type="button">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i> Ishga tushirish
+                        </button>
+                        <button class="btn btn-ghost" id="resetExperiment" type="button">
+                            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Tiklash
+                        </button>
+                    </div>
+                    <div class="lab-safety">
+                        <h4><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Xavfsizlik</h4>
+                        <p id="experimentSafety"></p>
+                    </div>
+                </div>
+
+                <div class="lab-info-column">
+                    <p class="lab-description" id="experimentDescriptionText"></p>
+                    <div class="chemical-tags" id="experimentChemicals"></div>
+                    <div class="lab-controls">
+                        <h4><i class="fa-solid fa-sliders" aria-hidden="true"></i> Parametrlar</h4>
+                        <div id="experimentControls"></div>
+                    </div>
+                    <div class="lab-procedure">
+                        <h4><i class="fa-solid fa-list-ol" aria-hidden="true"></i> Tajriba yo'li</h4>
+                        <ol id="experimentProcedure"></ol>
+                    </div>
+                </div>
+
+                <div class="lab-results-column">
+                    <h4><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Natijalar</h4>
+                    <div class="lab-results" id="experimentResults"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= AUTH MODAL ================= -->
+    <div class="modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-sm" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <div class="auth-head">
+                <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-atom"></i></span>
+                <h3 id="authTitle">Tizimga kirish</h3>
+                <p>Ismingizni kiriting — progress va sevimlilar brauzeringizda saqlanadi.</p>
+            </div>
+            <form id="authForm" novalidate>
+                <label class="field">
+                    <span>Ism</span>
+                    <input type="text" id="authName" name="name" placeholder="Masalan: Azizbek" autocomplete="name" required minlength="2" data-autofocus>
+                </label>
+                <label class="field">
+                    <span>Email <small>(ixtiyoriy)</small></span>
+                    <input type="email" id="authEmail" name="email" placeholder="ism@example.com" autocomplete="email">
+                </label>
+                <fieldset class="avatar-field">
+                    <legend>Avatar</legend>
+                    <div class="avatar-options">
+                        <button type="button" class="avatar-option is-active" data-avatar="atom" aria-pressed="true" aria-label="Atom"><i class="fa-solid fa-atom" aria-hidden="true"></i></button>
+                        <button type="button" class="avatar-option" data-avatar="flask" aria-pressed="false" aria-label="Kolba"><i class="fa-solid fa-flask" aria-hidden="true"></i></button>
+                        <button type="button" class="avatar-option" data-avatar="microscope" aria-pressed="false" aria-label="Mikroskop"><i class="fa-solid fa-microscope" aria-hidden="true"></i></button>
+                        <button type="button" class="avatar-option" data-avatar="star" aria-pressed="false" aria-label="Yulduz"><i class="fa-solid fa-star" aria-hidden="true"></i></button>
+                    </div>
+                </fieldset>
+                <p class="form-error" id="authError" hidden></p>
+                <button class="btn btn-primary btn-block" id="authSubmit" type="submit">Kirish</button>
+                <p class="form-hint"><i class="fa-solid fa-lock" aria-hidden="true"></i> Ma'lumotlar faqat shu qurilmada saqlanadi.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= PROFILE MODAL ================= -->
+    <div class="modal" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileName" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <div class="profile-head">
+                <div class="profile-avatar" id="profileAvatar" aria-hidden="true"><i class="fa-solid fa-atom"></i></div>
+                <div>
+                    <h3 id="profileName">Mehmon</h3>
+                    <p id="profileEmail">Email kiritilmagan</p>
+                    <span class="profile-joined">Qo'shilgan: <span id="profileJoined">—</span></span>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div><strong id="profileExperiments">0 / 6</strong><span>Eksperiment</span></div>
+                <div><strong id="profileQuizBest">—</strong><span>Test natijasi</span></div>
+                <div><strong id="profileFavorites">0</strong><span>Sevimli element</span></div>
+                <div><strong id="profileElements">0</strong><span>Ko'rilgan element</span></div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-outline" id="profileEdit" type="button">
+                    <i class="fa-solid fa-pen" aria-hidden="true"></i> Tahrirlash
+                </button>
+                <button class="btn btn-ghost" id="profileLogout" type="button">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Chiqish
+                </button>
+                <button class="btn btn-danger-ghost" id="profileResetProgress" type="button">
+                    <i class="fa-solid fa-trash" aria-hidden="true"></i> Progressni tozalash
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CALCULATOR MODAL ================= -->
+    <div class="modal" id="calculatorModal" role="dialog" aria-modal="true" aria-labelledby="calculatorTitle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <h3 id="calculatorTitle" class="modal-title"><i class="fa-solid fa-calculator" aria-hidden="true"></i> Kimyoviy kalkulyator</h3>
+            <div class="calc-tabs" role="tablist">
+                <button class="calc-tab is-active" type="button" role="tab" data-calc-tab="molar">Molyar massa</button>
+                <button class="calc-tab" type="button" role="tab" data-calc-tab="dilution">Suyultirish</button>
+            </div>
+            <div data-calc-panel="molar">
+                <label class="field">
+                    <span>Kimyoviy formula</span>
+                    <input type="text" id="molarFormula" value="H2O" placeholder="Masalan: Ca(OH)2, Al2(SO4)3" autocomplete="off" spellcheck="false">
+                </label>
+                <div class="formula-examples">
+                    <button type="button" data-formula-example="H2O">H₂O</button>
+                    <button type="button" data-formula-example="H2SO4">H₂SO₄</button>
+                    <button type="button" data-formula-example="Ca(OH)2">Ca(OH)₂</button>
+                    <button type="button" data-formula-example="Al2(SO4)3">Al₂(SO₄)₃</button>
+                    <button type="button" data-formula-example="CuSO4*5H2O">CuSO₄·5H₂O</button>
+                    <button type="button" data-formula-example="C6H12O6">C₆H₁₂O₆</button>
+                </div>
+                <button class="btn btn-primary btn-block" id="molarCalculate" type="button">
+                    <i class="fa-solid fa-equals" aria-hidden="true"></i> Hisoblash
+                </button>
+                <div class="calc-result" id="molarResult"></div>
+            </div>
+            <div data-calc-panel="dilution" hidden>
+                <p class="muted">Suyultirish formulasi: <strong>C₁V₁ = C₂V₂</strong></p>
+                <div class="field-grid">
+                    <label class="field">
+                        <span>Boshlang'ich konsentratsiya C₁ (M)</span>
+                        <input type="number" id="dilutionC1" min="0.0001" step="0.01" value="1">
+                    </label>
+                    <label class="field">
+                        <span>Boshlang'ich hajm V₁ (mL)</span>
+                        <input type="number" id="dilutionV1" min="0.1" step="1" value="10">
+                    </label>
+                </div>
+                <label class="field">
+                    <span>Yakuniy konsentratsiya C₂ (M)</span>
+                    <input type="number" id="dilutionC2" min="0.0001" step="0.01" value="0.1">
+                </label>
+                <button class="btn btn-primary btn-block" id="dilutionCalculate" type="button">
+                    <i class="fa-solid fa-flask" aria-hidden="true"></i> Hisoblash
+                </button>
+                <div class="calc-result" id="dilutionResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= GAME MODAL ================= -->
+    <div class="modal" id="gameModal" role="dialog" aria-modal="true" aria-labelledby="gameTitle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <h3 id="gameTitle" class="modal-title"><i class="fa-solid fa-gamepad" aria-hidden="true"></i> Element o'yini</h3>
+
+            <div class="game-screen" id="gameStart">
+                <div class="game-intro-icon" aria-hidden="true"><i class="fa-solid fa-atom"></i></div>
+                <p>10 raundda element belgisini nomi bilan yoki nomini belgisi bilan moslashtiring.</p>
+                <p class="muted" id="gameStartBest">Hali o'ynalmagan</p>
+                <p class="muted">Eng yaxshi natija: <strong id="gameBest">—</strong></p>
+                <button class="btn btn-primary btn-lg" id="gameStartBtn" type="button">
+                    <i class="fa-solid fa-play" aria-hidden="true"></i> Boshlash
+                </button>
+            </div>
+
+            <div class="game-screen" id="gamePlay" hidden>
+                <div class="game-topbar">
+                    <span>Raund: <strong id="gameRound">1 / 10</strong></span>
+                    <span>Ball: <strong id="gameScore">0</strong></span>
+                </div>
+                <div class="game-question" id="gameQuestion"></div>
+                <div class="game-options" id="gameOptions"></div>
+            </div>
+
+            <div class="game-screen game-result-screen" id="gameResult" hidden>
+                <div class="game-result-icon" aria-hidden="true"><i class="fa-solid fa-trophy"></i></div>
+                <h4>O'yin yakunlandi</h4>
+                <p class="game-result-score" id="gameResultScore">0 / 10</p>
+                <p id="gameResultMessage"></p>
+                <button class="btn btn-primary" id="gameRestart" type="button">
+                    <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Qayta o'ynash
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= FORMULA MODAL ================= -->
+    <div class="modal" id="formulaModal" role="dialog" aria-modal="true" aria-labelledby="formulaTitle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-lg" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <h3 id="formulaTitle" class="modal-title"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Kimyo formulalari varaqasi</h3>
+            <div class="formula-actions">
+                <button class="btn btn-primary btn-sm" id="printFormulas" type="button">
+                    <i class="fa-solid fa-print" aria-hidden="true"></i> Chop etish
+                </button>
+                <button class="btn btn-outline btn-sm" id="downloadFormulas" type="button">
+                    <i class="fa-solid fa-download" aria-hidden="true"></i> Yuklab olish
+                </button>
+            </div>
+            <div class="formula-sheet" id="formulaSheet">
+                <h1>Kimyo formulalari va qonunlari</h1>
+                <h2>Asosiy kattaliklar</h2>
+                <table>
+                    <thead><tr><th>Kattalik</th><th>Belgisi</th><th>Birligi</th><th>Formula</th></tr></thead>
+                    <tbody>
+                        <tr><td>Modda miqdori</td><td>n</td><td>mol</td><td class="formula">n = m / M</td></tr>
+                        <tr><td>Molyar massa</td><td>M</td><td>g/mol</td><td class="formula">M = m / n</td></tr>
+                        <tr><td>Molyar konsentratsiya</td><td>C</td><td>mol/L</td><td class="formula">C = n / V</td></tr>
+                        <tr><td>Zarracha soni</td><td>N</td><td>ta</td><td class="formula">N = n · N<sub>A</sub></td></tr>
+                        <tr><td>Gaz hajmi (n.sh.)</td><td>V</td><td>L</td><td class="formula">V = n · 22,4</td></tr>
+                        <tr><td>Zichlik</td><td>ρ</td><td>g/cm³</td><td class="formula">ρ = m / V</td></tr>
+                    </tbody>
+                </table>
+                <h2>Eritmalar</h2>
+                <table>
+                    <thead><tr><th>Qonun</th><th>Formula</th><th>Izoh</th></tr></thead>
+                    <tbody>
+                        <tr><td>Suyultirish</td><td class="formula">C₁V₁ = C₂V₂</td><td>Modda miqdori o'zgarmaydi</td></tr>
+                        <tr><td>Massa ulushi</td><td class="formula">ω = m<sub>modda</sub> / m<sub>eritma</sub> · 100%</td><td>Foiz konsentratsiya</td></tr>
+                        <tr><td>pH</td><td class="formula">pH = −lg[H⁺]</td><td>25 °C da pH + pOH = 14</td></tr>
+                        <tr><td>Neytrallanish</td><td class="formula">C₁V₁ = C₂V₂</td><td>Ekvivalent nuqtada</td></tr>
+                    </tbody>
+                </table>
+                <h2>Gazlar</h2>
+                <table>
+                    <thead><tr><th>Qonun</th><th>Formula</th><th>Shart</th></tr></thead>
+                    <tbody>
+                        <tr><td>Boyl – Mariott</td><td class="formula">p₁V₁ = p₂V₂</td><td>T = const</td></tr>
+                        <tr><td>Gey-Lyussak</td><td class="formula">p₁/T₁ = p₂/T₂</td><td>V = const</td></tr>
+                        <tr><td>Sharl</td><td class="formula">V₁/T₁ = V₂/T₂</td><td>p = const</td></tr>
+                        <tr><td>Ideal gaz</td><td class="formula">pV = nRT</td><td>R = 8,314 J/(mol·K)</td></tr>
+                    </tbody>
+                </table>
+                <h2>Elektrokimyo</h2>
+                <table>
+                    <thead><tr><th>Kattalik</th><th>Formula</th><th>Izoh</th></tr></thead>
+                    <tbody>
+                        <tr><td>Faraday qonuni</td><td class="formula">m = (M · I · t) / (n · F)</td><td>F = 96 485 C/mol</td></tr>
+                        <tr><td>Zaryad</td><td class="formula">Q = I · t</td><td>Q — kulon (C)</td></tr>
+                    </tbody>
+                </table>
+                <h2>Muhim doimiylar</h2>
+                <table>
+                    <tbody>
+                        <tr><td>Avogadro doimiysi</td><td class="formula">N<sub>A</sub> = 6,022 × 10²³ mol⁻¹</td></tr>
+                        <tr><td>Molyar gaz hajmi (n.sh.)</td><td class="formula">V<sub>m</sub> = 22,4 L/mol</td></tr>
+                        <tr><td>Faraday doimiysi</td><td class="formula">F = 96 485 C/mol</td></tr>
+                        <tr><td>Suvning molyar massasi</td><td class="formula">M(H₂O) = 18 g/mol</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SHORTCUTS MODAL ================= -->
+    <div class="modal" id="shortcutsModal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-sm" role="document">
+            <button class="modal-close" type="button" data-modal-close aria-label="Yopish">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <h3 id="shortcutsTitle" class="modal-title"><i class="fa-solid fa-keyboard" aria-hidden="true"></i> Klaviatura yorliqlari</h3>
+            <dl class="shortcut-list">
+                <div><dt><kbd>Ctrl</kbd> + <kbd>K</kbd></dt><dd>Element qidiruviga o'tish</dd></div>
+                <div><dt><kbd>Esc</kbd></dt><dd>Ochiq oynani yopish</dd></div>
+                <div><dt><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></dt><dd>Jadval bo'ylab harakat</dd></div>
+                <div><dt><kbd>Home</kbd> / <kbd>End</kbd></dt><dd>Birinchi / oxirgi element</dd></div>
+                <div><dt><kbd>Enter</kbd></dt><dd>Demo turda keyingi qadam</dd></div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- ================= TOUR ================= -->
+    <aside class="tour-card" id="tourCard" role="dialog" aria-live="polite" aria-label="Demo tur" hidden>
+        <div class="tour-head">
+            <span class="tour-badge">Demo tur</span>
+            <span class="tour-step" id="tourStep">1 / 4</span>
+        </div>
+        <h4 id="tourTitle">Sarlavha</h4>
+        <p id="tourText">Tavsif</p>
+        <div class="tour-actions">
+            <button class="btn btn-ghost btn-sm" id="tourSkip" type="button">O'tkazib yuborish</button>
+            <button class="btn btn-primary btn-sm" id="tourNext" type="button">Keyingi</button>
+        </div>
+    </aside>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script src="data/elements.js"></script>
+    <script src="data/experiments.js"></script>
+    <script src="data/quizzes.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/experiments.js"></script>
+    <script src="js/technology.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
